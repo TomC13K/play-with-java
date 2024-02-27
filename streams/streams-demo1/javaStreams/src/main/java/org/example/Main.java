@@ -1,13 +1,15 @@
 package org.example;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
 
-        System.out.println("Hello world!");
+        System.out.println("List ops");
         List<Person> people = getPeople();
 
         // Imperative approach (OLD)
@@ -35,10 +37,18 @@ public class Main {
                 .filter(person -> person.getGender().equals(Gender.FEMALE))
                 .toList();
 
-        females.forEach(System.out::println);
+        //females.forEach(System.out::println);
 
         // Sort
+        List<Person> sorted = people.stream()
+                .sorted(Comparator.comparing(Person::getAge).thenComparing(Person::getGender).reversed())
+                .toList();
+        //sorted.forEach(System.out::println);
+
         // All match
+        boolean allMAtch = people.stream()
+                .allMatch(person -> person.getAge() >5);
+        System.out.println(allMAtch);
         // Any match
         // None match
         // Max
