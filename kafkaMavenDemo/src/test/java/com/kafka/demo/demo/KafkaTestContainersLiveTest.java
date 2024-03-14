@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertTrue;
-import static org.testcontainers.shaded.org.hamcrest.Matchers.containsString;
 
 @RunWith(SpringRunner.class)
 @Import(KafkaTestContainersLiveTest.KafkaTestContainersConfiguration.class)
