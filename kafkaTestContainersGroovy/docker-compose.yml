@@ -6,6 +6,7 @@ services:
     container_name: kafka
     volumes:
       - ./kafka-cluster/kafka/data:/bitnami/data
+    #command: "chmod -R 777 ./kafka-cluster/kafka/data"
     user: root
     ports:
       - '9092:9092'
