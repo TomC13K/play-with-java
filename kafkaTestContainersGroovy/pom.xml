@@ -133,6 +133,8 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<!-- Jacoco test coverage -->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -160,6 +162,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 			<!-- Spock tests -->
 			<plugin>
 				<groupId>org.codehaus.gmavenplus</groupId>
@@ -198,6 +201,73 @@
 						</testSource>
 					</testSources>
 				</configuration>
+			</plugin>
+
+			<!-- Maven plugin config  -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.2.5</version>
+				<configuration>
+					<testSourceDirectory>src/test/groovy</testSourceDirectory>
+					<runOrder>random</runOrder>
+					<includes>
+						<include>**/*Test</include>
+						<include>**/*Spec</include>
+						<include>**/*SpecIT</include>
+					</includes>
+					<failIfNoTests>false</failIfNoTests>
+					<useFile>false</useFile>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>3.0.0-M6</version>
+				<configuration>
+					<includes>
+						<include>**/*IT.java</include>
+						<include>**/*IT.groovy</include>
+					</includes>
+					<failIfNoTests>false</failIfNoTests>
+					<additionalClasspathElements>
+						<additionalClasspathElement>${basedir}/target/classes</additionalClasspathElement>
+					</additionalClasspathElements>
+					<parallel>none</parallel>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Perform mutation tests -->
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<version>1.14.1</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-junit5-plugin</artifactId>
+						<version>1.2.0</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<excludedTestClasses>
+						<param>com.kafka.demo.integration.*SpecIT</param>
+					</excludedTestClasses>
+					<mutationThreshold>80</mutationThreshold>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.3.1</version>
 			</plugin>
 		</plugins>
 	</build>
