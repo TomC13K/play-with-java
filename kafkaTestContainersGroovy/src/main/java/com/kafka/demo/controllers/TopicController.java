@@ -5,7 +5,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.StoreQueryParameters;
+import org.apache.kafka.streams.state.QueryableStoreTypes;
+import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.config.StreamsBuilderFactoryBean;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,10 +29,13 @@ import jakarta.validation.Valid;
 @RestController
 public class TopicController {
 
+
+    private final StreamsBuilderFactoryBean factoryBean;
     final KafkaProducerService service;
 
-    public TopicController(KafkaProducerService service) {
+    public TopicController(KafkaProducerService service,StreamsBuilderFactoryBean factoryBean) {
         this.service = service;
+        this.factoryBean=factoryBean;
     }
 
     // Delete a topic
@@ -77,6 +85,15 @@ public class TopicController {
         UriComponents topicURL = b.path("/topic/{topicName}").buildAndExpand(taskRequest.name());
 
         return ResponseEntity.created(topicURL.toUri()).body(Collections.singletonMap("data", taskRequest.name()));
+    }
+
+    @GetMapping("/count/{word}")
+    public Long getWordCount(@PathVariable String word) {
+        KafkaStreams kafkaStreams = factoryBean.getKafkaStreams();
+        ReadOnlyKeyValueStore<String, Long> counts = kafkaStreams.store(
+                StoreQueryParameters.fromNameAndType("counts", QueryableStoreTypes.keyValueStore())
+        );
+        return counts.get(word);
     }
 
 }

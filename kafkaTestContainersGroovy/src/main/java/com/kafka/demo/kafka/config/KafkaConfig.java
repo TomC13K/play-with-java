@@ -6,13 +6,18 @@ import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.kafka.annotation.EnableKafkaStreams;
+import org.springframework.kafka.annotation.KafkaStreamsDefaultConfiguration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.config.KafkaStreamsConfiguration;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
@@ -24,7 +29,15 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import com.kafka.demo.model.MessageObject;
 
+import static org.apache.kafka.streams.StreamsConfig.APPLICATION_ID_CONFIG;
+import static org.apache.kafka.streams.StreamsConfig.BOOTSTRAP_SERVERS_CONFIG;
+import static org.apache.kafka.streams.StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG;
+import static org.apache.kafka.streams.StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG;
+//import static org.apache.kafka.streams.StreamsConfig.STATE_DIR_CONFIG;
+
 @Configuration
+@EnableKafka
+@EnableKafkaStreams
 public class KafkaConfig {
 
     @Value(value = "${spring.kafka.bootstrap-servers}")
@@ -39,11 +52,26 @@ public class KafkaConfig {
     @Value(value = "${spring.kafka.trusted-packages}")
     private String trustedPackages;
 
+//    @Value(value = "${spring.kafka.streams.state.dir}")
+//    private String stateStoreLocation;
+
     final
     KafkaProperties kafkaProperties;
 
     public KafkaConfig(KafkaProperties kafkaProperties) {
         this.kafkaProperties = kafkaProperties;
+    }
+
+    @Bean(name = KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME)
+    public KafkaStreamsConfiguration kStreamsConfig() {
+        Map<String, Object> props = new HashMap<>();
+        props.put(APPLICATION_ID_CONFIG, "streams-app");
+        props.put(BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        props.put(DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+        props.put(DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+//        props.put(STATE_DIR_CONFIG, stateStoreLocation);
+
+        return new KafkaStreamsConfiguration(props);
     }
 
     @Bean
