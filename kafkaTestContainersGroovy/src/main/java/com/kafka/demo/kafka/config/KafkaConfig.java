@@ -33,7 +33,6 @@ import static org.apache.kafka.streams.StreamsConfig.APPLICATION_ID_CONFIG;
 import static org.apache.kafka.streams.StreamsConfig.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.streams.StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG;
 import static org.apache.kafka.streams.StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG;
-//import static org.apache.kafka.streams.StreamsConfig.STATE_DIR_CONFIG;
 
 @Configuration
 @EnableKafka
@@ -52,9 +51,6 @@ public class KafkaConfig {
     @Value(value = "${spring.kafka.trusted-packages}")
     private String trustedPackages;
 
-//    @Value(value = "${spring.kafka.streams.state.dir}")
-//    private String stateStoreLocation;
-
     final
     KafkaProperties kafkaProperties;
 
@@ -69,7 +65,6 @@ public class KafkaConfig {
         props.put(BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         props.put(DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-//        props.put(STATE_DIR_CONFIG, stateStoreLocation);
 
         return new KafkaStreamsConfiguration(props);
     }

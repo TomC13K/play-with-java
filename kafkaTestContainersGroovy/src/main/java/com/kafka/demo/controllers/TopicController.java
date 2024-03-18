@@ -29,13 +29,10 @@ import jakarta.validation.Valid;
 @RestController
 public class TopicController {
 
-
-    private final StreamsBuilderFactoryBean factoryBean;
     final KafkaProducerService service;
 
-    public TopicController(KafkaProducerService service,StreamsBuilderFactoryBean factoryBean) {
+    public TopicController(KafkaProducerService service) {
         this.service = service;
-        this.factoryBean=factoryBean;
     }
 
     // Delete a topic
@@ -85,15 +82,6 @@ public class TopicController {
         UriComponents topicURL = b.path("/topic/{topicName}").buildAndExpand(taskRequest.name());
 
         return ResponseEntity.created(topicURL.toUri()).body(Collections.singletonMap("data", taskRequest.name()));
-    }
-
-    @GetMapping("/count/{word}")
-    public Long getWordCount(@PathVariable String word) {
-        KafkaStreams kafkaStreams = factoryBean.getKafkaStreams();
-        ReadOnlyKeyValueStore<String, Long> counts = kafkaStreams.store(
-                StoreQueryParameters.fromNameAndType("counts", QueryableStoreTypes.keyValueStore())
-        );
-        return counts.get(word);
     }
 
 }
