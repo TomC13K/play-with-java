@@ -23,6 +23,7 @@ public class WordCountController {
     public Long getWordCount(@PathVariable String word) {
         KafkaStreams kafkaStreams = factoryBean.getKafkaStreams();
 
+        assert kafkaStreams != null;
         if (!kafkaStreams.state().isRunningOrRebalancing()){
             kafkaStreams.start();
         }
