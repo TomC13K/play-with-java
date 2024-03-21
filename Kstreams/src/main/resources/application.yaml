@@ -1,10 +1,55 @@
 spring:
+  application:
+    name: kstreams
   kafka:
+    bootstrap-servers: localhost:9092
     streams:
-      application-id: kstreams-id-group
+      application-id: task-stream
       bootstrap-servers: localhost:9092
       properties:
         default:
           key-serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-          value-serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-          auto-offset-reset: earliest
+    consumer:
+      enable-auto-commit: true
+      group-id: my-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+
+#spring:
+#  kafka:
+#    streams:
+#      application-id: task-stream
+#      bootstrap-servers: localhost:9092
+#      properties:
+#        default:
+#          key-serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+#          value-serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+#          auto-offset-reset: earliest
+#          key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#          value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#
+#          producer:
+##            bootstrap-servers: localhost:9092
+#            key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#            value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#          consumer:
+#            enable-auto-commit: true
+##            bootstrap-servers: localhost:9092
+#
+#            auto-offset-reset: earliest
+#        binder:
+#          autoCreateTopics: false
+#          producerProperties:
+#            key.serializer: org.apache.kafka.common.serialization.StringSerializer
+#            value.serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#
+#    consumer:
+#      enable-auto-commit: true
+#      bootstrap-servers: localhost:9092
+#      group-id: my-group
+#      auto-offset-reset: earliest
+

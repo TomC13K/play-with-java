@@ -1,5 +1,6 @@
 package com.kafka.demo.demo;
 
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
@@ -25,7 +26,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
-public class StandaloneKStream {
+public class DemoApplication {
 
     static Faker faker = new Faker();
     private static final String INPUT_TOPIC = "input_topic";
@@ -71,7 +72,7 @@ public class StandaloneKStream {
     record TransformedData(String uniqueId, String queryId, List<Data> data, Long eventTimestampMs) {}
 
     public static void main(String[] args) throws JsonProcessingException {
-        SpringApplication.run(StandaloneKStream.class, args);
+        SpringApplication.run(DemoApplication.class, args);
     }
 
     @Bean

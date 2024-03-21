@@ -1,6 +1,6 @@
 package com.kstreams;
 
-import com.kafka.demo.demo.KafkaStreamsProcessor;
+import processor_producer.KafkaStreamsProcessor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.TestConfiguration;
 
