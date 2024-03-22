@@ -32,7 +32,7 @@ public class DemoApplication {
     private static final String INPUT_TOPIC = "input_topic";
     private static final String OUTPUT_TOPIC = "output_topic";
 
-    @Value(value = "${spring.kafka.bootstrap-servers}")
+    @Value("${kafka.streams.bootstrap-servers}")
     private static String bootstrapAddress;
 
     // Define input records

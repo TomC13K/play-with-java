@@ -1,8 +1,8 @@
 spring:
   application:
     name: kstreams
+
   kafka:
-    bootstrap-servers: localhost:9092
     streams:
       application-id: task-stream
       bootstrap-servers: localhost:9092
