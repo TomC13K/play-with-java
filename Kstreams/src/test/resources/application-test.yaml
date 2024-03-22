@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: kstreams
+  kafka:
+    bootstrap-servers: localhost:9092
+    streams:
+      application-id: task-stream
+      bootstrap-servers: localhost:9092
+      properties:
+        default:
+          key-serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+    consumer:
+      enable-auto-commit: true
+      group-id: my-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer

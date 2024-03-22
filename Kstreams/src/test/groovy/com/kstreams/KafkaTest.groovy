@@ -1,7 +1,7 @@
 package com.kstreams
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.TestPropertySource
-import org.testcontainers.containers.DockerComposeContainer
+import org.testcontainers.containers.ComposeContainer
 import org.testcontainers.containers.KafkaContainer
 import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.junit.jupiter.Container
@@ -19,11 +19,11 @@ class KafkaTest extends Specification {
 
     @Shared
     @AutoCleanup
-
-    public static DockerComposeContainer environment =
-            new DockerComposeContainer(new File(DOCKER_COMPOSE_FILE_PATH))
+    public static ComposeContainer environment =
+            new ComposeContainer(new File(DOCKER_COMPOSE_FILE_PATH))
                     .withLocalCompose(true)
-                    .withExposedService(9092)
+                    .withOptions("--compatibility")
+                    .withExposedService("kafka", 1, 9092, Wait.forListeningPort());
 
     def "Kafka container should be running"() {
         when:
@@ -32,6 +32,9 @@ class KafkaTest extends Specification {
         then:
         def kafkaPort = environment.getServicePort("kafka", 9092)
         kafkaPort.isPresent() == true
+
+        expect:
+        1==1
     }
 
 }
