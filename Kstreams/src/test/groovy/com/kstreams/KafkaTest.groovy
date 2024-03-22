@@ -23,7 +23,7 @@ class KafkaTest extends Specification {
             new ComposeContainer(new File(DOCKER_COMPOSE_FILE_PATH))
                     .withLocalCompose(true)
                     .withOptions("--compatibility")
-                    .withExposedService("kafka", 1, 9092, Wait.forListeningPort());
+                    .withExposedService("kafka", 1, 9092, Wait.forListeningPort())
 
     def "Kafka container should be running"() {
         when:
