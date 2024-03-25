@@ -1,10 +1,10 @@
 services:
   kafka:
-    image: bitnami/kafka:latest
+    image: bitnami/kafka:3.6
     hostname: kafka
     container_name: kafka
     volumes:
-      - ./kafka:/bitnami/data
+      - ./kafka/test:/bitnami/data
     user: root
     ports:
       - 9092:9092

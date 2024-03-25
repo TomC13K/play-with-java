@@ -1,4 +1,4 @@
-package com.kafkastreams;
+package two.kstreamSeparate;
 
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -12,7 +12,7 @@ public class Processor {
 
     public static void main(String[] args) {
         Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka-streams-filter-example");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "ks-id-group");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 
         StreamsBuilder builder = new StreamsBuilder();
@@ -23,7 +23,7 @@ public class Processor {
             // Change the condition as per your requirements
             // Here, we are filtering out messages where the ID is less than 1600
             int id = Integer.parseInt(key);
-            return id < 1600;
+            return id < 10;
         });
 
         filteredStream.to(OUTPUT_TOPIC);
@@ -35,3 +35,4 @@ public class Processor {
         Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
     }
 }
+

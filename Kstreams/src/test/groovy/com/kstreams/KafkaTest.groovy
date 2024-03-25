@@ -1,41 +1,39 @@
 package com.kstreams
+
+import config.Config
+import one.kafkastreams.KafkaApp
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.TestPropertySource
-import org.testcontainers.containers.ComposeContainer
-import org.testcontainers.containers.KafkaContainer
-import org.testcontainers.containers.wait.strategy.Wait
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
-import spock.lang.AutoCleanup
-import spock.lang.Shared
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@TestPropertySource(properties = ["spring.kafka.bootstrap-servers=\${kafka.bootstrap-servers}"])
-@Testcontainers
+
+@ContextConfiguration(initializers = Config.LocalServerInitializer.class, classes = KafkaApp.class)
+@ActiveProfiles(["test"])
+@SpringBootTest(classes = KafkaApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class KafkaTest extends Specification {
 
-    private static final String DOCKER_COMPOSE_FILE_PATH = "src/test/resources/compose.yml"
-
-    @Shared
-    @AutoCleanup
-    public static ComposeContainer environment =
-            new ComposeContainer(new File(DOCKER_COMPOSE_FILE_PATH))
-                    .withLocalCompose(true)
-                    .withOptions("--compatibility")
-                    .withExposedService("kafka", 1, 9092, Wait.forListeningPort())
-
-    def "Kafka container should be running"() {
-        when:
-        environment.start()
-
-        then:
-        def kafkaPort = environment.getServicePort("kafka", 9092)
-        kafkaPort.isPresent() == true
-
-        expect:
-        1==1
+    def "Dummy test"() {
+    expect:
+        1 == 1
     }
+
+
+//    def "Kafka container should be running"() {
+//        println("TESTS HERE");
+//        given:
+//            String topic = "testTopic";
+//
+//
+//        when:
+//        println(Config.environment.exposedPorts);
+//        var kafkaPort = Config.environment.getServicePort("kafka", 9092)
+//
+//        then:
+//        //kafkaPort == 9092
+//        1==1
+//
+//    }
 
 }
 

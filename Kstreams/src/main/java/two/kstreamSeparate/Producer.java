@@ -1,4 +1,4 @@
-package com.kafkastreams;
+package two.kstreamSeparate;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -28,3 +28,4 @@ public class Producer {
         }
     }
 }
+
